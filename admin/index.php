@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['login'])) {
+if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
 ?>
   <!DOCTYPE html>
   <html lang="en">
@@ -105,7 +105,7 @@ if (isset($_SESSION['login'])) {
             <span>Mahasiswa</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="customer.php">
+          <a class="nav-link" href="presensi.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Presensi</span></a>
         </li>
