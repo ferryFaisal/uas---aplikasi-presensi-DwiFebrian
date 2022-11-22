@@ -111,7 +111,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
                         <span>Mahasiswa</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="customer.php">
+                    <a class="nav-link" href="presensi.php">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Presensi</span></a>
                 </li>
@@ -131,14 +131,14 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
                         <li class="breadcrumb-item">
                             <a href="#">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Mahasiswa</li>
+                        <li class="breadcrumb-item active">Presensi</li>
                     </ol>
 
                     <!-- DataTables Example -->
                     <div class="card mb-3">
                         <div class="card-header">
                             <i class="fas fa-table"></i>
-                            Mahasiswa
+                            Presensi
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -163,8 +163,8 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
                                             <td><?php echo $row["nama"] ?></td>
                                             <td><?php echo $row["status_presensi"] ?></td>
                                             <td>
-                                                <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
-                                                <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
+                                                <a href='presensi_update.php?id=<?= $row['id'] ?>'>Edit</a> |
+                                                <a onclick="return confirm ('Are you sure?')" href='presensi_delete.php?id=<?= $row['id'] ?>'>Delete</a>
                                             </td>
                                         </tr>
                                     <?php
