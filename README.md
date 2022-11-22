@@ -1,3 +1,7 @@
+Nama    : Dwi Febrianto Halim
+NIM     : 3202016090
+Kelas   : 5B
+
 PETUNJUK PENGERJAAN UJIAN AKHIR SEMESTER - PRAKTIKUM PEMROGRAMAN WEB
 --------------------------------------------------------------------
 
