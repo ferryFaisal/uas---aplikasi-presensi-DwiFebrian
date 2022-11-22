@@ -162,8 +162,8 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                                             <td><?php echo $row["modified"] ?></td>
                                             <td><?php echo $row["created"] ?></td>
                                             <td>
-                                                <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
-                                                <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
+                                                <a href='user_update.php?email=<?= $row['email'] ?>'>Edit</a> |
+                                                <a onclick="return confirm ('Are you sure?')" href='user_delete.php?email=<?= $row['email'] ?>'>Delete</a>
                                             </td>
                                         </tr>
                                     <?php

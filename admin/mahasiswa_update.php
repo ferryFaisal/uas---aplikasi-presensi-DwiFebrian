@@ -31,7 +31,6 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
             $nim = $_GET['nim'];
             $nama = $row['nama'];
             $kelas = $row['kelas'];
-            $pass = $row['password'];
         }
     }
 
