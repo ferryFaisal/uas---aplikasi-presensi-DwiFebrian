@@ -31,7 +31,7 @@ if (isset($_SESSION['login'])) {
         <div class="card-body">
           <form method="POST" action="">
             <!-- <div class="form-group"> -->
-            <div class="row form-row mb-1">
+            <div class="row form-row mb-3">
               <div class="col-md-4">
                 <div class="form-label-group">
                   <input type="date" id="tgl" name="tgl" class="form-control" placeholder="Tgl" autofocus="autofocus" value="">
@@ -55,6 +55,11 @@ if (isset($_SESSION['login'])) {
                     <option value="5B"> 5B </option>
                   </select>
                 </div>
+              </div>
+            </div>
+            <div class="row form-row mb-3">
+              <div class="col-md-12">
+                <button class="btn btn-primary" type="button">Select!</button>
               </div>
             </div>
             <hr>

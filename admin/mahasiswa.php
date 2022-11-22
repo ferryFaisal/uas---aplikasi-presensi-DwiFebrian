@@ -153,8 +153,8 @@ if (isset($_SESSION['login'])) {
                                             <td><?php echo $row["nama"] ?></td>
                                             <td><?php echo $row["kelas"] ?></td>
                                             <td>
-                                                <a href='user_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
-                                                <a onclick="return confirm ('Are you sure?')" href='user_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
+                                                <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
+                                                <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
                                             </td>
                                         </tr>
                                     <?php
