@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "SELECT * FROM user";
             $result = mysqli_query($conn, $sql);
             if (mysqli_num_rows($result) > 0) {
-                // output data of each row
+                // output data of each rowname
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row["email"] != $email) {
                         $valEmail = true;
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($_POST["password"])) {
-        $passErr = "Password is requied";
+        $passErr = "Password is required";
     } else {
         $pass = test_input($_POST["password"]);
     }

@@ -55,23 +55,27 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
         }
     }
 
-    if ($valName && $valPass && $valRole == true) {
-        require "connect.php";
-        $dm = date("Y-m-d");
-        $pass = sha1($pass);
+    if (isset($_POST['submit'])) {
+        if ($valName && $valPass && $valRole == true) {
+            require "connect.php";
+            $dm = date("Y-m-d");
+            $pass = sha1($pass);
 
-        $sql = "UPDATE user SET name = '$nName', password = '$nPass', role = '$role', date_modified = '$dm'
-        where email = '$email'";
+            $sql = "UPDATE user SET name = '$nName', password = '$nPass', role = '$role', modified = '$dm'
+            where email = '$email'";
 
-        if (mysqli_query($conn, $sql)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            if (mysqli_query($conn, $sql)) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            }
+
+            mysqli_close($conn);
+            header("Location: user.php");
         }
-
-        mysqli_close($conn);
-        header("Location: user.php");
     }
+
+
 ?>
 
     <!DOCTYPE html>
@@ -267,7 +271,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                     </div>
                   </div>
                   <div class="form-row">
-                    <div class="col-md-6 text-danger"><?php echo $roleErr; ?></div>
+                    <div class="col-md-6 text-danger"></div>
                   </div>
                 </div> -->
                                     <!-- <div class="form-group">
@@ -286,8 +290,8 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                     </div>
                   </div>
                   <div class="form-row">
-                    <div class="col-md-6 text-danger"><?php echo $passErr; ?></div>
-                    <div class="col-md-6 text-danger"><?php echo $rpassErr; ?></div>
+                    <div class="col-md-6 text-danger"></div>
+                    <div class="col-md-6 text-danger"></div>
                   </div>
                 </div> -->
                                     <input class="btn btn-primary btn-block" type="submit" name="submit" value="Update User">
