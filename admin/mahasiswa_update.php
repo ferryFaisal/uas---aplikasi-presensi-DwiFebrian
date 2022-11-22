@@ -1,42 +1,45 @@
 <?php
 session_start();
 if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
+    require 'connect.php';
 
     ob_start();
-
-
     // proses validasi inputan user
-    $nimErr = $namaErr = $kelasErr = "";
-    $nim = $nama = $kelas = "";
-    $valNim = $valNama = $valKelas = false;
+    $namaErr = $kelasErr = "";
+    $nNama = $nKelas = "";
+    $valNama = $valKelas = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["nim"])) {
-          $nimErr = "NIM is required";
-        } else {
-          $nim = ($_POST["nim"]);
-          $valNim = true;
-        }
         if (empty($_POST["nama"])) {
-          $namaErr = "Nama is required";
+            $namaErr = "Nama is required";
         } else {
-          $nama = ($_POST["nama"]);
-          $valNama = true;
+            $nNama = ($_POST["nama"]);
+            $valNama = true;
         }
         if (empty($_POST["kelas"])) {
-          $kelasErr = "Kelas is required";
+            $kelasErr = "Kelas is required";
         } else {
-          $kelas = ($_POST["kelas"]);
-          $valKelas = true;
+            $nKelas = ($_POST["kelas"]);
+            $valKelas = true;
         }
     }
 
-    if ($valNim && $valNama && $valKelas == true) {
+    $sql = "SELECT * FROM mahasiswa where nim = '$_GET[nim]'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $nim = $_GET['nim'];
+            $nama = $row['nama'];
+            $kelas = $row['kelas'];
+            $pass = $row['password'];
+        }
+    }
+
+    if ($valNama && $valKelas == true) {
         require "connect.php";
 
 
-        $sql = "update mahasiswa set
-        nama = '$nName', kelas = '$nKelas' where nim = '$nim'";
+        $sql = "update mahasiswa set nama = '$nNama', kelas = '$nKelas' where nim = '$nim'";
 
         if (mysqli_query($conn, $sql)) {
             echo "New record created successfully";
@@ -45,7 +48,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
         }
 
         mysqli_close($conn);
-        header("Location: add_mahasiswa.php");
+        header("Location: mahasiswa.php");
     }
 ?>
 
@@ -185,11 +188,8 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                                 <form action="" method="post">
                                     <div class="form-group">
                                         <div class="form-label-group">
-                                            <input type="text" name="nim" id="nim" class="form-control" placeholder="NIM" value="<?php echo $nim; ?>">
+                                            <input type="text" name="nim" id="nim" class="form-control" placeholder="NIM" value="<?php echo $nim; ?>" readonly>
                                             <label for="nim">NIM</label>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 text-danger"><?php echo $nimErr; ?></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -211,7 +211,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                                         </div>
                                     </div>
 
-                                    <input class="btn btn-primary btn-block" type="submit" name="submit" value="Register">
+                                    <input class="btn btn-primary btn-block" type="submit" name="submit" value="Update">
                                 </form>
                             </div>
                         </div>
