@@ -130,6 +130,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'dosen') {
             <br>
             <p class="text-center">
               <input type="submit" name="submit" value="Simpan Presensi" class="btn btn-primary btn-block">
+              <a class="btn btn-primary" href="admin/logout.php">Logout</a>
             </p>
             <!-- <a class="btn btn-secondary btn-block" href="users.php">Cancel</a> -->
           </form>
