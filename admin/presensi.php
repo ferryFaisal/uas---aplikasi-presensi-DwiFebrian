@@ -4,7 +4,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
 
     require "connect.php";
 
-    $sql = "SELECT * FROM mahasiswa";
+    $sql = "SELECT * FROM presensi";
     $result = mysqli_query($conn, $sql);
 ?>
 
@@ -143,20 +143,25 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button class="btn btn-warning"><a href="add_mahasiswa.php">Add Mahasiswa</a></button>
                                     <tr>
+                                        <th>Tanggal</th>
+                                        <th>Mata Kuliah</th>
+                                        <th>Kelas</th>
                                         <th>NIM</th>
                                         <th>Nama</th>
-                                        <th>Kelas</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                     <?php
                                     while ($row = mysqli_fetch_assoc($result)) {
                                     ?>
                                         <tr>
+                                            <td><?php echo $row["tgl_presensi"] ?></td>
+                                            <td><?php echo $row["makul"] ?></td>
+                                            <td><?php echo $row["kelas"] ?></td>
                                             <td><?php echo $row["nim"] ?></td>
                                             <td><?php echo $row["nama"] ?></td>
-                                            <td><?php echo $row["kelas"] ?></td>
+                                            <td><?php echo $row["status_presensi"] ?></td>
                                             <td>
                                                 <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
                                                 <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
