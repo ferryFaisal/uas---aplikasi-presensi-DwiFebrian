@@ -143,6 +143,7 @@ if (isset($_SESSION['login'])) {
                                         <th>NIM</th>
                                         <th>Nama</th>
                                         <th>Kelas</th>
+                                        <th>Action</th>
                                     </tr>
                                     <?php
                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -151,7 +152,6 @@ if (isset($_SESSION['login'])) {
                                             <td><?php echo $row["nim"] ?></td>
                                             <td><?php echo $row["nama"] ?></td>
                                             <td><?php echo $row["kelas"] ?></td>
-
                                             <td>
                                                 <a href='user_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
                                                 <a onclick="return confirm ('Are you sure?')" href='user_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>

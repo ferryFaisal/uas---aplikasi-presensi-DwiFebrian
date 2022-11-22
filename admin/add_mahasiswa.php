@@ -6,116 +6,46 @@ if (isset($_SESSION['login'])) {
 
 
     // proses validasi inputan user
-    $emailErr = $fnameErr = $lnameErr =  $passErr = $rpassErr = $roleErr = "";
-    $email = $fname = $lname =  $pass = $rpass = $role = "";
-    $valEmail = $valfName = $vallName = $valPass = $valRole = false;
+    $nimErr = $namaErr = $kelasErr = "";
+    $nim = $nama = $kelas = "";
+    $valNim = $valNama = $valKelas = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["email"])) {
-            $emailErr = "Email is required";
+        if (empty($_POST["nim"])) {
+          $nimErr = "NIM is required";
         } else {
-            $email = ($_POST["email"]);
-            // cek format email
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Invalid email format";
-            } else {
-                require "connect_db.php";
-                $sql = "SELECT * FROM user";
-                $result = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result) > 0) {
-                    // output data of each row
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        if ($row["email"] != $email) {
-                            $valEmail = true;
-                        } else {
-                            $emailErr = "Email already exist!";
-                            $valEmail = false;
-                            break;
-                        }
-                    }
-                } else {
-                    echo "0 results";
-                }
-                mysqli_close($conn);
-            }
+          $nim = ($_POST["nim"]);
+          $valNim = true;
         }
-
-        // if (empty($_POST["email"])) {
-        //   $emailErr = "Role is requied";
-        // } else {
-        //   $email = test_input($_POST["email"]);
-        //   $valEmail = true;
-        // }
-
-        if (empty($_POST["fname"])) {
-            $fnameErr = "First Name is required";
+        if (empty($_POST["nama"])) {
+          $namaErr = "Nama is required";
         } else {
-            $fname = ($_POST["fname"]);
-            // cek format nama
-            if (!preg_match("/^[a-zA-Z-' ]*$/", $fname)) {
-                $fnameErr = "Only letters and white space allowed";
-            } else {
-                $valfName = true;
-            }
+          $nama = ($_POST["nama"]);
+          $valNama = true;
         }
-
-        if (empty($_POST["lname"])) {
-            $lnameErr = "Last Name is required";
+        if (empty($_POST["kelas"])) {
+          $kelasErr = "Kelas is required";
         } else {
-            $lname = ($_POST["lname"]);
-            // cek format nama
-            if (!preg_match("/^[a-zA-Z-' ]*$/", $lname)) {
-                $lnameErr = "Only letters and white space allowed";
-            } else {
-                $vallName = true;
-            }
-        }
-
-        if (empty($_POST["password"])) {
-            $passErr = "Password is requied";
-        } else {
-            $pass = ($_POST["password"]);
-        }
-
-        if (empty($_POST["role"])) {
-            $roleErr = "Role is requied";
-        } else {
-            $role = ($_POST["role"]);
-            $valRole = true;
-        }
-
-        if (empty($_POST["rpassword"])) {
-            $rpassErr = "Repeat the Password";
-        } else {
-            $rpass = ($_POST["rpassword"]);
-        }
-
-        if ($pass != $rpass) {
-            $rpassErr = "Repeat password must be the same as password";
-        } else {
-            $valPass = true;
+          $kelas = ($_POST["kelas"]);
+          $valKelas = true;
         }
     }
 
     // fungsi sanitasi
-    function test_input($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
+    // function test_input($data)
+    // {
+    //     $data = trim($data);
+    //     $data = stripslashes($data);
+    //     $data = htmlspecialchars($data);
+    //     return $data;
+    // }
 
-    if ($valEmail && $valfName && $vallName && $valPass && $valRole == true) {
-        require "connect_db.php";
+    if ($valNim && $valNama && $valKelas == true) {
+        require "connect.php";
 
-        $role = $_POST['role'];
-        $dc = date("Y-m-d");
-        $dm = date("Y-m-d");
-        $pass = sha1($pass);
 
-        $sql = "INSERT INTO user (email, first_name, last_name, password, role, date_created, date_modified)
-VALUES ('$email', '$fname', '$lname', '$pass', '$role', '$dc', '$dm')";
+        $sql = "INSERT INTO mahasiswa (nim, nama, kelas)
+VALUES ('$nim', '$nama', '$kelas')";
 
         if (mysqli_query($conn, $sql)) {
             echo "New record created successfully";
@@ -124,7 +54,7 @@ VALUES ('$email', '$fname', '$lname', '$pass', '$role', '$dc', '$dm')";
         }
 
         mysqli_close($conn);
-        header("Location: user.php");
+        header("Location: add_mahasiswa.php");
     }
 ?>
 
