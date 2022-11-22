@@ -138,7 +138,7 @@ if (isset($_SESSION['login'])) {
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button class="btn btn-warning"><a href="add_user.php">Add User</a></button>
+                                    <button class="btn btn-warning"><a href="add_mahasiswa.php">Add Mahasiswa</a></button>
                                     <tr>
                                         <th>NIM</th>
                                         <th>Nama</th>
