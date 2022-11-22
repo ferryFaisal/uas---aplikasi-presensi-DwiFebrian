@@ -85,7 +85,6 @@ function test_input($data)
 if ($valEmail && $valName && $valPass && $valRole == true) {
     require "connect.php";
 
-    // $role = $_POST['role'];
     $dc = date("Y-m-d");
     $dm = date("Y-m-d");
     $pass = sha1($pass);
