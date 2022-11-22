@@ -2,6 +2,25 @@
 session_start();
 if (isset($_SESSION['login'])) {
   require "admin/connect.php";
+
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tgl = $_POST['tgl'];
+    $makul = $_POST['makul'];
+    $kelas = $_POST['kelas'];
+    $nim = $_POST['nim'];
+    $nama = $_POST['nama'];
+    $presensi = $_POST['presensi'];
+
+    if (isset($_POST['submit'])) {
+      $sql = "insert into presensi values";
+      for ($i = 0; $i < count($nim); $i++) {
+        $sql = "('$tgl', '$makul', '$kelas', '{$nim[$i]}', '{$nama[$i]}', '{$presensi[$i]}'), ";
+      }
+      $sql = rtrim($sql, ',');
+      mysqli_query($conn, $sql);
+    }
+  }
 ?>
 
   <!doctype html>
