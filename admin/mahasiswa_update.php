@@ -1,11 +1,52 @@
 <?php
 session_start();
-if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
+if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
 
-    require "connect.php";
+    ob_start();
 
-    $sql = "SELECT * FROM mahasiswa";
-    $result = mysqli_query($conn, $sql);
+
+    // proses validasi inputan user
+    $nimErr = $namaErr = $kelasErr = "";
+    $nim = $nama = $kelas = "";
+    $valNim = $valNama = $valKelas = false;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["nim"])) {
+          $nimErr = "NIM is required";
+        } else {
+          $nim = ($_POST["nim"]);
+          $valNim = true;
+        }
+        if (empty($_POST["nama"])) {
+          $namaErr = "Nama is required";
+        } else {
+          $nama = ($_POST["nama"]);
+          $valNama = true;
+        }
+        if (empty($_POST["kelas"])) {
+          $kelasErr = "Kelas is required";
+        } else {
+          $kelas = ($_POST["kelas"]);
+          $valKelas = true;
+        }
+    }
+
+    if ($valNim && $valNama && $valKelas == true) {
+        require "connect.php";
+
+
+        $sql = "update mahasiswa set
+        nama = '$nName', kelas = '$nKelas' where nim = '$nim'";
+
+        if (mysqli_query($conn, $sql)) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
+
+        mysqli_close($conn);
+        header("Location: add_mahasiswa.php");
+    }
 ?>
 
     <!DOCTYPE html>
@@ -19,7 +60,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin - Tables</title>
+        <title>SB Admin - Blank Page</title>
 
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -107,76 +148,74 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="mahasiswa.php">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Mahasiswa</span></a>
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Mahasiswa</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="presensi.php">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Presensi</span></a>
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Presensi</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="user.php">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Users</span></a>
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Users</span>
+                    </a>
                 </li>
             </ul>
-
             <div id="content-wrapper">
 
                 <div class="container-fluid">
-
                     <!-- Breadcrumbs-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="#">Dashboard</a>
+                            <a href="index.html">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Mahasiswa</li>
+                        <li class="breadcrumb-item active">Add Mahasiswa</li>
                     </ol>
+                    <!-- Page Content -->
+                    <h1>Add Mahasiswa</h1>
+                    <hr>
+                    <div class="container">
+                        <div class="card card-register mx-auto mt-5">
+                            <div class="card-header">User Form</div>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <input type="text" name="nim" id="nim" class="form-control" placeholder="NIM" value="<?php echo $nim; ?>">
+                                            <label for="nim">NIM</label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 text-danger"><?php echo $nimErr; ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <input type="text" name="nama" id="nama" class="form-control" placeholder="Nama" value="<?php echo $nama; ?>">
+                                            <label for="nama">Nama</label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 text-danger"><?php echo $namaErr; ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <input type="text" name="kelas" id="kelas" class="form-control" placeholder="Kelas" value="<?php echo $kelas; ?>">
+                                            <label for="kelas">Kelas</label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 text-danger"><?php echo $kelasErr; ?></div>
+                                        </div>
+                                    </div>
 
-                    <!-- DataTables Example -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            Mahasiswa
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button class="btn btn-warning"><a href="add_mahasiswa.php">Add Mahasiswa</a></button>
-                                    <tr>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th>Kelas</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    <?php
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                    ?>
-                                        <tr>
-                                            <td><?php echo $row["nim"] ?></td>
-                                            <td><?php echo $row["nama"] ?></td>
-                                            <td><?php echo $row["kelas"] ?></td>
-                                            <td>
-                                                <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
-                                                <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </table>
-                                <?php
-                                mysqli_close($conn);
-                                ?>
+                                    <input class="btn btn-primary btn-block" type="submit" name="submit" value="Register">
+                                </form>
                             </div>
                         </div>
-                        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                     </div>
-
-                    <p class="small text-center text-muted my-5">
-                        <em>More table examples coming soon...</em>
-                    </p>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -227,20 +266,14 @@ if (isset($_SESSION['login']) && $_SESSION['role'] = 'admin') {
         <!-- Core plugin JavaScript-->
         <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Page level plugin JavaScript-->
-        <script src="vendor/datatables/jquery.dataTables.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-
         <!-- Custom scripts for all pages-->
         <script src="js/sb-admin.min.js"></script>
-
-        <!-- Demo scripts for this page-->
-        <script src="js/demo/datatables-demo.js"></script>
 
     </body>
 
     </html>
 <?php
+
 } else {
     echo "You can't access this page before you login!";
     echo "<br>";
