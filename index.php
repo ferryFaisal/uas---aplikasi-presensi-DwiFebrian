@@ -14,8 +14,8 @@ if (isset($_SESSION['login'])) {
 
     if (isset($_POST['submit'])) {
       $sql = "insert into presensi values";
-      for ($i = 0; $i < count($nim); $i++) {
-        $sql = "('$tgl', '$makul', '$kelas', '{$nim[$i]}', '{$nama[$i]}', '{$presensi[$i]}'), ";
+      for ($i = 0; $i < count($nama); $i++) {
+        $sql .= "('$tgl', '$makul', '$kelas', '{$nim[$i]}', '{$nama[$i]}', '{$presensi[$i]}'),";
       }
       $sql = rtrim($sql, ',');
       mysqli_query($conn, $sql);
