@@ -109,6 +109,11 @@ if (isset($_SESSION['login'])) {
             <i class="fas fa-fw fa-table"></i>
             <span>Presensi</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="user.php">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Users</span></a>
+        </li>
       </ul>
 
       <div id="content-wrapper">

@@ -1,12 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['login'])) {
-
   require "admin/connect.php";
-
-  $sql = "SELECT * FROM mahasiswa";
-  $result = mysqli_query($conn, $sql);
-
 ?>
 
   <!doctype html>
@@ -59,7 +54,7 @@ if (isset($_SESSION['login'])) {
             </div>
             <div class="row form-row mb-3">
               <div class="col-md-12">
-                <button class="btn btn-primary" type="button">Select!</button>
+                <button class="btn btn-primary" type="submit" name="select">Select!</button>
               </div>
             </div>
             <hr>
@@ -71,34 +66,47 @@ if (isset($_SESSION['login'])) {
             <hr>
 
             <?php
-            while ($row = mysqli_fetch_assoc($result)) {
+            if (isset($_POST['select'])) {
+              if ($_POST['kelas'] == '5A') {
+                $sql = "SELECT * FROM mahasiswa where kelas = '5A' ";
+                $result = mysqli_query($conn, $sql);
+              }
+              if ($_POST['kelas'] == '5B') {
+                $sql = "SELECT * FROM mahasiswa where kelas = '5B' ";
+                $result = mysqli_query($conn, $sql);
+              }
+              while ($row = mysqli_fetch_assoc($result)) {
             ?>
-              <div class="row form-row mb-1">
-                <div class="col-md-4">
-                  <div class="form-label-group">
-                    <input type="text" id="nim" name="nim" class="form-control" placeholder="NIM" autofocus="autofocus" value="<?php echo $row["nim"] ?>">
+                <div class="row form-row mb-1">
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <input type="text" id="nim" name="nim[]" class="form-control" placeholder="NIM" autofocus="autofocus" value="<?php echo $row["nim"] ?>">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <input type="text" id="nama" name="nama[]" class="form-control" placeholder="Nama" autofocus="autofocus" value="<?php echo $row["nama"] ?>">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <select name="presensi[]" id="presensi" class="form-control" autofocus="autofocus">
+                        <option value="Hadir"> Hadir </option>
+                        <option value="Sakit"> Sakit </option>
+                        <option value="Izin"> Izin </option>
+                        <option value="Alpa"> Alpa </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-label-group">
-                    <input type="text" id="nama" name="nama" class="form-control" placeholder="Nama" autofocus="autofocus" value="<?php echo $row["nama"] ?>">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-label-group">
-                    <select name="presensi" id="presensi" class="form-control" autofocus="autofocus">
-                      <option value=""> -- Pilih Status -- </option>
-                      <option value="Hadir"> Hadir </option>
-                      <option value="Sakit"> Sakit </option>
-                      <option value="Izin"> Izin </option>
-                      <option value="Alpa"> Alpa </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
             <?php
+              }
+            } else {
+              echo "Pilih kelas terlebih dahulu!";
             }
             ?>
+
+
             <!-- </div> -->
             <br>
             <p class="text-center">

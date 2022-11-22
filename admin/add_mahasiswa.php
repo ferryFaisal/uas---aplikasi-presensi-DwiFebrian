@@ -161,6 +161,18 @@ VALUES ('$nim', '$nama', '$kelas')";
                         <span>Mahasiswa</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="presensi.php">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Presensi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="user.php">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
             </ul>
             <div id="content-wrapper">
 

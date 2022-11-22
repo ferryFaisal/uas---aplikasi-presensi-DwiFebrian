@@ -4,7 +4,7 @@ if (isset($_SESSION['login'])) {
 
     require "connect.php";
 
-    $sql = "SELECT * FROM mahasiswa";
+    $sql = "SELECT * FROM user";
     $result = mysqli_query($conn, $sql);
 ?>
 
@@ -145,18 +145,22 @@ if (isset($_SESSION['login'])) {
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <button class="btn btn-warning"><a href="add_mahasiswa.php">Add Mahasiswa</a></button>
                                     <tr>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th>Kelas</th>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Email</th>
+                                        <th>Date Modified</th>
+                                        <th>Date Created</th>
                                         <th>Action</th>
                                     </tr>
                                     <?php
                                     while ($row = mysqli_fetch_assoc($result)) {
                                     ?>
                                         <tr>
-                                            <td><?php echo $row["nim"] ?></td>
-                                            <td><?php echo $row["nama"] ?></td>
-                                            <td><?php echo $row["kelas"] ?></td>
+                                            <td><?php echo $row["name"] ?></td>
+                                            <td><?php echo $row["role"] ?></td>
+                                            <td><?php echo $row["email"] ?></td>
+                                            <td><?php echo $row["modified"] ?></td>
+                                            <td><?php echo $row["created"] ?></td>
                                             <td>
                                                 <a href='mahasiswa_update.php?nim=<?= $row['nim'] ?>'>Edit</a> |
                                                 <a onclick="return confirm ('Are you sure?')" href='mahasiswa_delete.php?nim=<?= $row['nim'] ?>'>Delete</a>
