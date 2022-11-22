@@ -60,9 +60,8 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
         $dm = date("Y-m-d");
         $pass = sha1($pass);
 
-        $sql = "UPDATE user
-SET name = '$nName', password = '$nPass', role = '$role', date_modified = '$dm'
-where email = '$email'";
+        $sql = "UPDATE user SET name = '$nName', password = '$nPass', role = '$role', date_modified = '$dm'
+        where email = '$email'";
 
         if (mysqli_query($conn, $sql)) {
             echo "New record created successfully";
@@ -208,7 +207,7 @@ where email = '$email'";
                         <div class="card card-register mx-auto mt-5">
                             <div class="card-header">User Form</div>
                             <div class="card-body">
-                            <form action="" method="post">
+                                <form action="" method="post">
                                     <input type="hidden" name="email" value="<?php echo $email; ?>">
                                     <div class="form-group">
                                         <div class="form-label-group">
