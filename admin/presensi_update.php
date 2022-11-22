@@ -5,9 +5,9 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
 
     ob_start();
     // proses validasi inputan user
-    $namaErr = $kelasErr = $roleErr ="";
-    $nNama = $nKelas = $role ="";
-    $valNama = $valKelas = $valRole = false;
+    $namaErr = $kelasErr = $statusErr ="";
+    $nNama = $nKelas = $status ="";
+    $valNama = $valKelas = $valStatus = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["nama"])) {
@@ -22,11 +22,11 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
             $nKelas = ($_POST["kelas"]);
             $valKelas = true;
         }
-        if (empty($_POST["role"])) {
-            $roleErr = "Role is required";
+        if (empty($_POST["presensi"])) {
+            $statusErr = "Status is required";
         } else {
-            $role = ($_POST["role"]);
-            $valRole = true;
+            $status = ($_POST["presensi"]);
+            $valStatus = true;
         }
     }
 
@@ -37,7 +37,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
             $sHadir = $sSakit = $sIzin = $sAlpa = "";
             switch ($row['status_presensi']) {
                 case "hadir":
-                    $sOwner = "selected";
+                    $sHadir = "selected";
                     break;
                 case "sakit":
                     $sSakit = "selected";
@@ -56,11 +56,11 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
         }
     }
 
-    if ($valNama && $valKelas && $valRole == true) {
+    if ($valNama && $valKelas && $valStatus == true) {
         require "connect.php";
 
 
-        $sql = "update presensi set role = '$role' where id = '$id'";
+        $sql = "update presensi set status_presensi = '$status' where id = '$id'";
 
         if (mysqli_query($conn, $sql)) {
             echo "New record created successfully";
@@ -233,7 +233,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                                     </div>
                                     <div class="form-group">
                                         <div class="form-label-group">
-                                            <select name="presensi[]" id="presensi" class="form-control" autofocus="autofocus">
+                                            <select name="presensi" id="presensi" class="form-control" autofocus="autofocus">
                                                 <option value="Hadir" <?php echo $sHadir ?>> Hadir </option>
                                                 <option value="Sakit" <?php echo $sSakit ?>> Sakit </option>
                                                 <option value="Izin" <?php echo $sIzin ?>> Izin </option>
@@ -241,7 +241,7 @@ if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
                                             </select>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-md-6 text-danger"><?php echo $roleErr; ?></div>
+                                            <div class="col-md-6 text-danger"><?php echo $statusErr; ?></div>
                                         </div>
                                     </div>
 
