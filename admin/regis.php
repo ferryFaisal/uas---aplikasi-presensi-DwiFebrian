@@ -6,34 +6,34 @@ $email = $name =  $pass = $rpass = $role = "";
 $valEmail = $valName = $valPass = $valRole = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // if (empty($_POST["email"])) {
-    //     $emailErr = "Email is required";
-    // } else {
-    //     $email = test_input($_POST["email"]);
-    //     // cek format email
-    //     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    //         $emailErr = "Invalid email format";
-    //     } else {
-    //         require "connect.php";
-    //         $sql = "SELECT * FROM user";
-    //         $result = mysqli_query($conn, $sql);
-    //         if (mysqli_num_rows($result) > 0) {
-    //             // output data of each row
-    //             while ($row = mysqli_fetch_assoc($result)) {
-    //                 if ($row["email"] != $email) {
-    //                     $valEmail = true;
-    //                 } else {
-    //                     $emailErr = "Email already exist!";
-    //                     $valEmail = false;
-    //                     break;
-    //                 }
-    //             }
-    //         } else {
-    //             echo "0 results";
-    //         }
-    //         mysqli_close($conn);
-    //     }
-    // }
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+    } else {
+        $email = test_input($_POST["email"]);
+        // cek format email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        } else {
+            require "connect.php";
+            $sql = "SELECT * FROM user";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+                    if ($row["email"] != $email) {
+                        $valEmail = true;
+                    } else {
+                        $emailErr = "Email already exist!";
+                        $valEmail = false;
+                        break;
+                    }
+                }
+            } else {
+                echo "0 results";
+            }
+            mysqli_close($conn);
+        }
+    }
 
     if (empty($_POST["name"])) {
         $nameErr = "Name is required";
@@ -51,13 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passErr = "Password is requied";
     } else {
         $pass = test_input($_POST["password"]);
-    }
-
-    if (empty($_POST["email"])) {
-        $emailErr = "Email is requied";
-    } else {
-        $email = test_input($_POST["email"]);
-        $valEmail = true;
     }
 
     if (empty($_POST["role"])) {

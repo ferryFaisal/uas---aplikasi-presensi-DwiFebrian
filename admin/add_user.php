@@ -3,40 +3,97 @@ session_start();
 if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
 
     ob_start();
-
-
-    // proses validasi inputan user
-    $nimErr = $namaErr = $kelasErr = "";
-    $nim = $nama = $kelas = "";
-    $valNim = $valNama = $valKelas = false;
+    $emailErr = $nameErr =  $passErr = $rpassErr = $roleErr = "";
+    $email = $name =  $pass = $rpass = $role = "";
+    $valEmail = $valName = $valPass = $valRole = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["nim"])) {
-          $nimErr = "NIM is required";
+        if (empty($_POST["email"])) {
+            $emailErr = "Email is required";
         } else {
-          $nim = ($_POST["nim"]);
-          $valNim = true;
+            $email = ($_POST["email"]);
+            // cek format email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailErr = "Invalid email format";
+            } else {
+                require "connect.php";
+                $sql = "SELECT * FROM user";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    // output data of each row
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        if ($row["email"] != $email) {
+                            $valEmail = true;
+                        } else {
+                            $emailErr = "Email already exist!";
+                            $valEmail = false;
+                            break;
+                        }
+                    }
+                } else {
+                    echo "0 results";
+                }
+                mysqli_close($conn);
+            }
         }
-        if (empty($_POST["nama"])) {
-          $namaErr = "Nama is required";
+
+        if (empty($_POST["name"])) {
+            $nameErr = "Name is required";
         } else {
-          $nama = ($_POST["nama"]);
-          $valNama = true;
+            $name = ($_POST["name"]);
+            // cek format nama
+            if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+                $nameErr = "Only letters and white space allowed";
+            } else {
+                $valName = true;
+            }
         }
-        if (empty($_POST["kelas"])) {
-          $kelasErr = "Kelas is required";
+
+        if (empty($_POST["password"])) {
+            $passErr = "Password is requied";
         } else {
-          $kelas = ($_POST["kelas"]);
-          $valKelas = true;
+            $pass = ($_POST["password"]);
+        }
+
+        if (empty($_POST["role"])) {
+            $roleErr = "Role is requied";
+        } else {
+            $role = ($_POST["role"]);
+            $valRole = true;
+        }
+
+        if (empty($_POST["rpassword"])) {
+            $rpassErr = "Repeat the Password";
+        } else {
+            $rpass = ($_POST["rpassword"]);
+        }
+
+        if ($pass != $rpass) {
+            $rpassErr = "Repeat password must be the same as password";
+        } else {
+            $valPass = true;
         }
     }
 
-    if ($valNim && $valNama && $valKelas == true) {
+    // fungsi sanitasi
+    // function test_input($data)
+    // {
+    //     $data = trim($data);
+    //     $data = stripslashes($data);
+    //     $data = htmlspecialchars($data);
+    //     return $data;
+    // }
+
+    if ($valEmail && $valName && $valPass && $valRole == true) {
         require "connect.php";
 
+        // $role = $_POST['role'];
+        $dc = date("Y-m-d");
+        $dm = date("Y-m-d");
+        $pass = sha1($pass);
 
-        $sql = "INSERT INTO mahasiswa (nim, nama, kelas)
-VALUES ('$nim', '$nama', '$kelas')";
+        $sql = "INSERT INTO user (email, name, password, role, created, modified)
+        VALUES ('$email', '$name', '$pass', '$role', '$dc', '$dm')";
 
         if (mysqli_query($conn, $sql)) {
             echo "New record created successfully";
@@ -45,7 +102,7 @@ VALUES ('$nim', '$nama', '$kelas')";
         }
 
         mysqli_close($conn);
-        header("Location: add_mahasiswa.php");
+        header("Location: add_user.php");
     }
 ?>
 
@@ -173,10 +230,10 @@ VALUES ('$nim', '$nama', '$kelas')";
                         <li class="breadcrumb-item">
                             <a href="index.html">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Add Mahasiswa</li>
+                        <li class="breadcrumb-item active">Add User</li>
                     </ol>
                     <!-- Page Content -->
-                    <h1>Add Mahasiswa</h1>
+                    <h1>Add User</h1>
                     <hr>
                     <div class="container">
                         <div class="card card-register mx-auto mt-5">
@@ -185,32 +242,58 @@ VALUES ('$nim', '$nama', '$kelas')";
                                 <form action="" method="post">
                                     <div class="form-group">
                                         <div class="form-label-group">
-                                            <input type="text" name="nim" id="nim" class="form-control" placeholder="NIM" value="<?php echo $nim; ?>">
-                                            <label for="nim">NIM</label>
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="<?php echo $name; ?>">
+                                            <label for="name">Name</label>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-md-6 text-danger"><?php echo $nimErr; ?></div>
+                                            <div class="col-md-6 text-danger"><?php echo $nameErr; ?></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="form-label-group">
-                                            <input type="text" name="nama" id="nama" class="form-control" placeholder="Nama" value="<?php echo $nama; ?>">
-                                            <label for="nama">Nama</label>
+                                            <input type="text" name="email" id="inputEmail" class="form-control" placeholder="Email address" value="<?php echo $email; ?>">
+                                            <label for="inputEmail">Email address</label>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-md-6 text-danger"><?php echo $namaErr; ?></div>
+                                            <div class="col-md-6 text-danger"><?php echo $emailErr; ?></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="form-label-group">
-                                            <input type="text" name="kelas" id="kelas" class="form-control" placeholder="Kelas" value="<?php echo $kelas; ?>">
-                                            <label for="kelas">Kelas</label>
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-label-group">
+                                                    <select name="role" id="role" class="form-control form-select-lg" value="<?php echo $role; ?>">
+                                                        <option value="">--Select the Role--</option>
+                                                        <option value="dosen">Dosen</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-md-6 text-danger"><?php echo $kelasErr; ?></div>
+                                            <div class="col-md-6 text-danger"><?php echo $roleErr; ?></div>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-label-group">
+                                                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" value="<?php echo $pass; ?>">
+                                                    <label for="inputPassword">Password</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-label-group">
+                                                    <input type="password" name="rpassword" id="confirmPassword" class="form-control" placeholder="Confirm password" value="<?php echo $rpass; ?>">
+                                                    <label for="confirmPassword">Confirm password</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 text-danger"><?php echo $passErr; ?></div>
+                                            <div class="col-md-6 text-danger"><?php echo $rpassErr; ?></div>
+                                        </div>
+                                    </div>
                                     <input class="btn btn-primary btn-block" type="submit" name="submit" value="Register">
                                 </form>
                             </div>

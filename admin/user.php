@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['login'])) {
+if (isset($_SESSION['login']) && $_SESSION['role'] == 'admin') {
 
     require "connect.php";
 
@@ -111,7 +111,7 @@ if (isset($_SESSION['login'])) {
                         <span>Mahasiswa</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="customer.php">
+                    <a class="nav-link" href="presensi.php">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Presensi</span></a>
                 </li>
@@ -143,7 +143,7 @@ if (isset($_SESSION['login'])) {
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button class="btn btn-warning"><a href="add_mahasiswa.php">Add Mahasiswa</a></button>
+                                    <button class="btn btn-warning"><a href="add_user.php">Add User</a></button>
                                     <tr>
                                         <th>Name</th>
                                         <th>Role</th>

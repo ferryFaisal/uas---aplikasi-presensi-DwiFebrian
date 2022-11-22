@@ -73,7 +73,7 @@ if (isset($_POST['login'])) {
         $_SESSION['login'] = $email;
         $_SESSION['name'] = $cnt['name'];
         $_SESSION['role'] = $cnt['role'];
-        header("Location: index.php");
+        header("Location: ../index.php");
         break;
       case 'admin':
         $_SESSION['login'] = $email;
