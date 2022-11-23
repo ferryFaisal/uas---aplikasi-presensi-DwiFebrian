@@ -3,9 +3,9 @@
 $server = 'localhost';
 $user = 'root';
 $password = '';
-$name = 'uas';
+$dbname = 'uas';
 
-$conn = mysqli_connect($server, $user, $password, $name);
+$conn = mysqli_connect($server, $user, $password, $dbname);
 
 if (!$conn) {
     echo 'cannot connect to this DB';
